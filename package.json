@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build:dev": "webpack --config config/webpack.dev.js --progress --profile",
+    "build:dev": "webpack --config config/webpack.dev.js --progress --profile --display-error-details --display-cached",
     "watch:dev": "npm run build:dev -- --watch",
     "start:hmr": "npm run server:dev:hmr",
     "server:dev:hmr": "npm run server:dev -- --inline --hot",

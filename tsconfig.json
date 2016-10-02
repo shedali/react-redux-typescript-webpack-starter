@@ -9,7 +9,8 @@
     "pretty": false,
     "declaration": true,
     "sourceMap": true,
-    "outDir": "dist"
+    "outDir": "dist",
+    "baseUrl": "./src"
   },
   "exclude": [
     "node_modules",

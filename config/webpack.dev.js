@@ -2,15 +2,15 @@ const path = require('path');
 const webpack = require('webpack');
 
 const PATHS = {
-  build: path.join(path.resolve(__dirname, '..'), 'dist')
+  build: path.resolve(__dirname, '..', 'dist')
 };
 
 module.exports = (opts) => {
 
   return {
-    context: path.join(path.resolve(__dirname, '..'), 'src'),
+    context: path.resolve(__dirname, '..', 'src'),
     entry: {
-      app: path.join(path.resolve(__dirname, '..'), 'src/app/index.tsx')
+      app: './app/index.tsx'
     },
     output: {
       path: PATHS.build,
@@ -19,6 +19,10 @@ module.exports = (opts) => {
     },
     devtool: 'source-map',
     resolve: {
+      modules: [
+        'src',
+        'node_modules'
+      ],
       extensions: ['.ts', '.tsx', '.js', '.jsx']
     },
     module: {
