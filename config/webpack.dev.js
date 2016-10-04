@@ -10,11 +10,13 @@ module.exports = (opts) => {
   return {
     context: path.resolve(__dirname, '..', 'src'),
     entry: {
-      app: './app/index.tsx'
+      app: './app/index.tsx',
+      lib: './lib/index.tsx',
+      vendor: ['react', 'react-dom']
     },
     output: {
       path: PATHS.build,
-      filename: 'bundle.js',
+      filename: '[name].js',
       publicPath: '/static/'
     },
     devtool: 'source-map',
@@ -33,7 +35,15 @@ module.exports = (opts) => {
         test: /\.json$/,
         loader: 'json'
       }]
-    }
+    },
+    plugins: [
+      new webpack.NamedModulesPlugin(),
+      //new webpack.HotModuleReplacementPlugin(),
+      new webpack.optimize.CommonsChunkPlugin({
+        name: 'vendor',
+        filename: 'bundle.vendor.js'
+      })
+    ]
   };
 
 };
