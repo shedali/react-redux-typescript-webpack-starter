@@ -1,65 +1,49 @@
-const path = require('path');
 const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const merge = require('webpack-merge');
 
-const PATHS = {
-  build: path.resolve(__dirname, '..', 'dist')
-};
+const commonConfig = require('./webpack.common.js');
+
+const ENV = process.env.ENV = process.env.NODE_ENV = 'development';
 
 module.exports = (opts) => {
 
-  return {
-    context: path.resolve(__dirname, '..', 'src'),
+  const devConfig = {
     entry: {
       app: [
         'react-hot-loader/patch',
         'webpack-dev-server/client?http://localhost:8080',
         'webpack/hot/only-dev-server',
         './app/index.tsx'
-      ],
-      lib: './lib/index.tsx',
-      vendor: ['react', 'react-dom']
-    },
-    output: {
-      path: PATHS.build,
-      filename: '[name].js',
-
-      // these settings make sense if we want to build the library accessible via global var
-      library: '[name]',
-      libraryTarget: 'var'
-    },
-    devServer: {
-      outputPath: PATHS.build
-    },
-    devtool: 'source-map',
-    resolve: {
-      modules: [
-        'src',
-        'node_modules'
-      ],
-      extensions: ['.ts', '.tsx', '.js', '.jsx']
+      ]
     },
     module: {
       loaders: [{
         test: /\.(ts|tsx)$/,
-        loaders: ['react-hot-loader/webpack', 'awesome-typescript-loader']
-      }, {
-        test: /\.json$/,
-        loader: 'json'
+        loaders: ['react-hot-loader/webpack']
       }]
-    },
-    plugins: [
-      new webpack.NamedModulesPlugin(),
-      //new webpack.HotModuleReplacementPlugin(),
-      new webpack.optimize.CommonsChunkPlugin({
-        name: 'vendor',
-        filename: 'bundle.vendor.js'
-      }),
-      new HtmlWebpackPlugin({
-        template: 'index.html',
-        chunksSortMode: 'dependency'
-      })
-    ]
+    }
   };
 
+  const config = merge(
+    {
+      entry: {
+        app: [
+          'react-hot-loader/patch',
+          'webpack-dev-server/client?http://localhost:8080',
+          'webpack/hot/only-dev-server',
+        ]
+      }
+    },
+    commonConfig({env: ENV}),
+    {
+      module: {
+        loaders: [{
+          test: /\.(ts|tsx)$/,
+          loaders: ['react-hot-loader/webpack']
+        }]
+      }
+    }
+  );
+
+  return config;
 };
