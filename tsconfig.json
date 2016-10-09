@@ -10,7 +10,10 @@
     "declaration": true,
     "sourceMap": true,
     "outDir": "dist",
-    "baseUrl": "./src"
+    "baseUrl": "./src",
+    "typeRoots": [
+      "./node_modules/@types", "./types"
+    ]
   },
   "exclude": [
     "node_modules",

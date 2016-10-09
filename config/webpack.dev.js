@@ -11,7 +11,12 @@ module.exports = (opts) => {
   return {
     context: path.resolve(__dirname, '..', 'src'),
     entry: {
-      app: './app/index.tsx',
+      app: [
+        'react-hot-loader/patch',
+        'webpack-dev-server/client?http://localhost:8080',
+        'webpack/hot/only-dev-server',
+        './app/index.tsx'
+      ],
       lib: './lib/index.tsx',
       vendor: ['react', 'react-dom']
     },
