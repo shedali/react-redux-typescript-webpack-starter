@@ -10,12 +10,14 @@
     "server:dev:hmr": "npm run server:dev -- --inline --hot",
     "server:dev": "webpack-dev-server --config config/webpack.dev.js --progress --profile --watch --content-base src/",
     "webpack-dev-server": "webpack-dev-server",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "karma start",
+    "watch:test": "npm run test -- --auto-watch --no-single-run"
   },
   "author": "Maxim Lichmanov",
   "license": "MIT",
   "devDependencies": {
     "@types/chai": "^3.4.34",
+    "@types/enzyme": "^2.4.36",
     "@types/lodash": "^4.14.36",
     "@types/mocha": "^2.2.32",
     "@types/react": "^0.14.37",
@@ -25,6 +27,7 @@
     "babel-loader": "^6.2.5",
     "chai": "^3.5.0",
     "css-loader": "^0.25.0",
+    "enzyme": "^2.4.1",
     "html-webpack-plugin": "^2.22.0",
     "istanbul-instrumenter-loader": "^1.0.0",
     "json-loader": "^0.5.4",
@@ -42,6 +45,7 @@
     "mocha": "^3.1.0",
     "node-sass": "^3.10.1",
     "phantomjs-prebuilt": "^2.1.13",
+    "react-addons-test-utils": "^15.3.2",
     "react-hot-loader": "^3.0.0-beta.5",
     "sass-loader": "^4.0.2",
     "sinon": "^1.17.6",

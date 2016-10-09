@@ -1,5 +1,7 @@
 const testWebpackConfig = require('./webpack.test.js')({env: 'test'});
 
+console.log('test webpack config', JSON.stringify(testWebpackConfig, null, 2));
+
 module.exports = function(config) {
   config.set({
 
@@ -12,7 +14,7 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'src/**/*.spec.(ts|tsx)'
+      'src/**/*.spec.+(ts|tsx)'
     ],
 
     // list of files to exclude
@@ -22,7 +24,7 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'src/**/*.spec.(ts|tsx)': ['coverage', 'webpack', 'sourcemap']
+      'src/**/*.spec.+(ts|tsx)': ['webpack']
     },
 
     // webpack config at ./webpack.test.js
