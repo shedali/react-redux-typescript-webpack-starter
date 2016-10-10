@@ -1,7 +1,5 @@
 const testWebpackConfig = require('./webpack.test.js')({env: 'test'});
 
-console.log('test webpack config', JSON.stringify(testWebpackConfig, null, 2));
-
 module.exports = function(config) {
   config.set({
 
@@ -13,9 +11,10 @@ module.exports = function(config) {
     frameworks: ['mocha', 'chai', 'sinon'],
 
     // list of files / patterns to load in the browser
-    files: [
-      'src/**/*.spec.+(ts|tsx)'
-    ],
+    files: [{
+      pattern: './config/spec-bundle.js',
+      watched: false
+    }],
 
     // list of files to exclude
     exclude: [
@@ -24,7 +23,7 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'src/**/*.spec.+(ts|tsx)': ['webpack']
+      './config/spec-bundle.js': ['coverage', 'webpack', 'sourcemap']
     },
 
     // webpack config at ./webpack.test.js
