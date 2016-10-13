@@ -1,15 +1,14 @@
 import * as React from 'react';
+import { Router, hashHistory } from 'react-router';
 
-import HelloWorld, { Hello } from 'lib/components/HelloWorld';
+import routes from 'app/routes';
 
 export default class App extends React.Component<any, any> {
 
     render() {
         return (
-            <div>
-                <HelloWorld/>
-                <Hello name="Maxim" />
-            </div>
+            <Router key={this.props.routerId} history={hashHistory} routes={routes}>
+            </Router>
         );
     }
 
