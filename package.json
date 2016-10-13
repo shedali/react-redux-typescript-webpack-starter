@@ -22,7 +22,10 @@
     "@types/mocha": "^2.2.32",
     "@types/react": "^0.14.37",
     "@types/react-dom": "^0.14.17",
+    "@types/react-redux": "^4.4.32",
     "@types/react-router": "^2.0.37",
+    "@types/react-router-redux": "^4.0.34",
+    "@types/redux": "^3.6.31",
     "awesome-typescript-loader": "^2.2.4",
     "babel-core": "^6.16.0",
     "babel-loader": "^6.2.5",
@@ -62,6 +65,9 @@
   "dependencies": {
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
-    "react-router": "^2.8.1"
+    "react-redux": "^4.4.5",
+    "react-router": "^2.8.1",
+    "react-router-redux": "^4.0.6",
+    "redux": "^3.6.0"
   }
 }
