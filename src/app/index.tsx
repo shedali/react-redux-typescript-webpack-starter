@@ -1,3 +1,9 @@
+declare var module: {hot: any};
+
+if (module.hot) {
+    require("react-hot-loader/patch");
+}
+
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { createStore } from 'redux';
@@ -17,8 +23,6 @@ const history = syncHistoryWithStore(hashHistory, store);
  See https://github.com/ReactTraining/react-router/issues/2704#issuecomment-211352123
  */
 let routerId: number = 0;
-
-declare var module: {hot: any};
 
 const renderApp = (App) => {
     let result =

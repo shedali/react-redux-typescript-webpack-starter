@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 
 const PATHS = {
   build: path.resolve(__dirname, '..', 'dist')
@@ -9,24 +10,19 @@ const PATHS = {
 module.exports = (opts) => {
 
   return {
+    cache: true,
     context: path.resolve(__dirname, '..', 'src'),
     entry: {
-      app: [
-        './app/index.tsx'
-      ],
-      lib: './lib/index.tsx',
-      vendor: ['react', 'react-dom']
+      app: './app/index.tsx',
+      lib: './lib/index.tsx'
     },
     output: {
       path: PATHS.build,
-      filename: '[name].js',
-
-      // these settings make sense if we want to build the library accessible via global var
-      library: '[name]',
-      libraryTarget: 'var'
+      filename: '[name].js'
     },
     devServer: {
-      outputPath: PATHS.build
+      outputPath: PATHS.build,
+      contentBase: 'dist'
     },
     devtool: 'source-map',
     resolve: {
@@ -46,10 +42,12 @@ module.exports = (opts) => {
       }]
     },
     plugins: [
+      new ProgressBarPlugin(),
       new webpack.NamedModulesPlugin(),
-      new webpack.optimize.CommonsChunkPlugin({
-        name: 'vendor',
-        filename: 'bundle.vendor.js'
+      new webpack.DllReferencePlugin({
+        context: process.cwd(),
+        manifest: require(path.join(PATHS.build, 'vendor-manifest.json')),
+        extensions: ['.js']
       }),
       new HtmlWebpackPlugin({
         template: 'index.html',
