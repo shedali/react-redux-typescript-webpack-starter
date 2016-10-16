@@ -18,21 +18,22 @@ const history = syncHistoryWithStore(hashHistory, store);
  */
 let routerId: number = 0;
 
+declare var module: {hot: any};
+
 const renderApp = (App) => {
-    return (
-        <AppContainer>
-            <Provider store={store}>
-                <App routerId={routerId++} history={history} />
-            </Provider>
-        </AppContainer>
-    );
+    let result =
+        <Provider store={store}>
+            <App routerId={routerId++} history={history} />
+        </Provider>;
+    if (module.hot) {
+        result = <AppContainer>{result}</AppContainer>;
+    }
+    return result;
 };
 
 const target: HTMLElement = document.getElementById('container');
 
 ReactDOM.render(renderApp(App), target);
-
-declare var module: {hot: any};
 
 if (module.hot) {
     module.hot.accept('app/containers/App', () => {
