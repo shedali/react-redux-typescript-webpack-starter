@@ -13,7 +13,10 @@ module.exports = (opts) => {
     cache: true,
     context: path.resolve(__dirname, '..', 'src'),
     entry: {
-      app: './app/index.tsx',
+      app: [
+        'bootstrap-loader',
+        './app/index.tsx'
+      ],
       lib: './lib/index.tsx'
     },
     output: {
@@ -37,8 +40,23 @@ module.exports = (opts) => {
         test: /\.(ts|tsx)$/,
         loaders: ['awesome-typescript-loader']
       }, {
+        test: /bootstrap-sass[\/\\]assets[\/\\]javascripts[\/\\]/,
+        loader: 'imports',
+        query: {
+          jQuery: 'jquery'
+        }
+      }, {
         test: /\.json$/,
         loader: 'json'
+      }, {
+        test: /\.woff2?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        loader: 'url',
+        query: {
+          limit: 10000
+        }
+      }, {
+        test: /\.(ttf|eot|svg)(\?[\s\S]+)?$/,
+        loader: 'file'
       }]
     },
     plugins: [
@@ -52,6 +70,11 @@ module.exports = (opts) => {
       new HtmlWebpackPlugin({
         template: 'index.html',
         chunksSortMode: 'dependency'
+      }),
+      new webpack.ProvidePlugin({
+        $: "jquery",
+        jQuery: "jquery",
+        "window.jQuery": "jquery"
       })
     ]
   };
