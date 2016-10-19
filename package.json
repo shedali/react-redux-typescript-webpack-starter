@@ -19,6 +19,7 @@
   "devDependencies": {
     "@types/bootstrap": "^3.3.32",
     "@types/chai": "^3.4.34",
+    "@types/classnames": "0.0.31",
     "@types/enzyme": "^2.4.36",
     "@types/jquery": "^2.0.33",
     "@types/lodash": "^4.14.36",
@@ -76,6 +77,7 @@
     "webpack-merge": "^0.14.1"
   },
   "dependencies": {
+    "classnames": "^2.2.5",
     "jquery": "^2.2.4",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
