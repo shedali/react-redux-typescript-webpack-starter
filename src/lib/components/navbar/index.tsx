@@ -30,7 +30,7 @@ export default class Navbar extends React.Component<NavbarProps, NavbarState> {
                         <button type="button"
                                 className="navbar-toggle collapsed"
                                 data-toggle="collapse"
-                                data-target={collapseId}
+                                data-target={'#' + collapseId}
                                 aria-expanded="false">
                             <span className="sr-only">Toggle navigation</span>
                             <span className="icon-bar"></span>
