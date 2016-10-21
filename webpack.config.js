@@ -1,10 +1,9 @@
+const colors = require('colors');
+
 const helpers = require('./config/helpers');
 
-switch (process.env.NODE_ENV) {
-  case 'dev':
-  case 'development':
-  default:
-    module.exports = require('./config/webpack.dev')({
-      isHmrEnabled: helpers.isHmrEnabled()
-    });
-}
+const buildTarget = helpers.getBuildTarget();
+
+console.log(`Building the ${buildTarget}...`.green);
+
+module.exports = require(`./config/webpack.${helpers.getBuildTarget()}`)({});

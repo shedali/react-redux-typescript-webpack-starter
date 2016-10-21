@@ -1,31 +1,94 @@
+const colors = require('colors');
 const path = require('path');
 const webpack = require('webpack');
+const nodeExternals = require('webpack-node-externals');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-const PATHS = {
-  build: path.resolve(__dirname, '..', 'dist')
-};
+const helpers = require('./helpers');
+const bundleName = helpers.getBundleName();
 
-module.exports = (opts) => {
+const getExternals = (target) => {
+  var externals = {};
+  if (target === helpers.BUILD_TARGET_PLUGIN) {
+    externals = nodeExternals();
+  }
+  return externals;
+}
 
-  return {
-    cache: true,
-    context: path.resolve(__dirname, '..', 'src'),
-    entry: {
+const getEntries = (target) => {
+  var entries;
+  console.log(`The build target is ${target}.`);
+  if (target === helpers.BUILD_TARGET_LIBRARY) {
+    entries = '../index.ts';
+  }
+  else if (target === helpers.BUILD_TARGET_PLUGIN) {
+    entries = '../index.ts';
+  }
+  else {
+    entries = {/*
       app: [
         'bootstrap-loader',
         './app/index.tsx'
       ],
       lib: './lib/index.tsx'
-    },
+    */};
+  }
+  return entries;
+};
+
+const getPlugins = (target) => {
+  var plugins;
+  // TODO: optimize
+  if (target === helpers.BUILD_TARGET_PLUGIN) {
+    plugins = [
+      new ProgressBarPlugin(),
+      new ExtractTextPlugin({
+        filename: '[name].css',
+        allChunks: true
+      })
+    ]
+  }
+  else {
+    plugins = [
+      new ProgressBarPlugin(),
+      new webpack.NamedModulesPlugin(),
+      new webpack.DllReferencePlugin({
+        context: process.cwd(),
+        manifest: require(path.join(helpers.OUTPUT_PATH, 'vendor-manifest.json')),
+        extensions: ['.js']
+      }),
+      new HtmlWebpackPlugin({
+        template: 'index.html',
+        chunksSortMode: 'dependency'
+      }),
+      new webpack.ProvidePlugin({
+        $: "jquery",
+        jQuery: "jquery",
+        "window.jQuery": "jquery"
+      }),
+      new ExtractTextPlugin({
+        filename: `${bundleName}.[name].css`,
+        allChunks: true
+      })
+    ];
+  }
+  return plugins;
+}
+
+module.exports = (options) => {
+
+  return {
+    cache: true,
+    context: path.resolve(__dirname, '..', 'src'),
+    entry: getEntries(options.target),
     output: {
-      path: PATHS.build,
+      path: helpers.OUTPUT_PATH,
       filename: '[name].js'
     },
     devServer: {
-      outputPath: PATHS.build,
+      outputPath: helpers.OUTPUT_PATH,
       contentBase: 'dist'
     },
     devtool: 'source-map',
@@ -98,28 +161,8 @@ module.exports = (opts) => {
         loader: 'file'
       }]
     },
-    plugins: [
-      new ProgressBarPlugin(),
-      new webpack.NamedModulesPlugin(),
-      new webpack.DllReferencePlugin({
-        context: process.cwd(),
-        manifest: require(path.join(PATHS.build, 'vendor-manifest.json')),
-        extensions: ['.js']
-      }),
-      new HtmlWebpackPlugin({
-        template: 'index.html',
-        chunksSortMode: 'dependency'
-      }),
-      new webpack.ProvidePlugin({
-        $: "jquery",
-        jQuery: "jquery",
-        "window.jQuery": "jquery"
-      }),
-      new ExtractTextPlugin({
-        filename: '[name].css',
-        allChunks: true
-      })
-    ]
+    plugins: getPlugins(options.target),
+    externals: getExternals(options.target)
   };
 
 };
