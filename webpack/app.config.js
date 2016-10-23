@@ -4,11 +4,65 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const concat = require('lodash/concat');
 
 const helpers = require('../config/helpers');
 const bundleName = helpers.getBundleName();
 
-module.exports = (opts) => {
+const loaders = require('./loaders');
+
+function getPlugins() {
+
+  var bundleFilename = bundleName + '.[name]';
+  if (helpers.isProd()) {
+    bundleFilename  += '.min';
+  }
+  var cssBundleFilename = bundleFilename + '.css';
+
+  var plugins = [
+    new ProgressBarPlugin(),
+    new webpack.NamedModulesPlugin(),
+    new webpack.DllReferencePlugin({
+      context: helpers.ROOT,
+      manifest: require(path.join(helpers.OUTPUT_PATH, 'vendor-manifest.json')),
+      extensions: ['.js']
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'lib'
+    }),
+    new HtmlWebpackPlugin({
+      template: 'index.html',
+      chunksSortMode: 'dependency'
+    }),
+    new webpack.ProvidePlugin({
+      $: "jquery",
+      jQuery: "jquery",
+      "window.jQuery": "jquery"
+    }),
+    new ExtractTextPlugin({
+      filename: cssBundleFilename,
+      allChunks: true
+    })
+  ];
+
+  if (helpers.isProd()) {
+    plugins.push(new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false
+      }
+    }));
+  }
+
+  return plugins;
+}
+
+module.exports = (options) => {
+
+  var bundleFilename = bundleName + '.[name]';
+  if (helpers.isProd()) {
+    bundleFilename  += '.min';
+  }
+  var jsBundleFilename = bundleFilename + '.js';
 
   var config = {
     cache: true,
@@ -22,7 +76,8 @@ module.exports = (opts) => {
     },
     output: {
       path: helpers.OUTPUT_PATH,
-      filename: `${bundleName}.[name].js`
+      filename: jsBundleFilename,
+      sourceMapFilename: `${jsBundleFilename}.map`
     },
     devServer: {
       outputPath: helpers.OUTPUT_PATH,
@@ -37,95 +92,18 @@ module.exports = (opts) => {
       extensions: ['.ts', '.tsx', '.js', '.jsx']
     },
     module: {
-      loaders: [{
-        test: /\.(ts|tsx)$/,
-        loaders: ['awesome-typescript-loader']
-      }, {
-        test: /bootstrap-sass[\/\\]assets[\/\\]javascripts[\/\\]/,
-        loader: 'imports',
-        query: {
-          jQuery: 'jquery'
-        }
-      }, {
-        test: /\.json$/,
-        loader: 'json'
-      }, {
-        test: /\.css$/,
-        include: /node_modules/,
-        loader: ExtractTextPlugin.extract({
-          fallbackLoader: 'style-loader',
-          loader: 'css-loader'
-        })
-      }, {
-        test: /\.scss$/,
-        loader: ExtractTextPlugin.extract({
-          fallbackLoader: 'style-loader',
-          loader: [{
-            loader: 'css-loader',
-            query: {
-              modules: true,
-              localIdentName: '[name]__[local]___[hash:base64:5]'
-            }
-          }, {
-            loader: 'sass-loader'
-          }, {
-            loader: 'postcss-loader'
-          }]
-        })
-      }, {
-        test: /\.css$/,
-        exclude: /node_modules/,
-        loader: ExtractTextPlugin.extract({
-          fallbackLoader: 'style-loader',
-          loader: [{
-            loader: 'css-loader',
-            query: {
-              modules: true,
-              localIdentName: '[name]__[local]___[hash:base64:5]'
-            }
-          }, {
-            loader: 'postcss-loader'
-          }]
-        })
-      }, {
-        test: /\.woff2?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        loader: 'url',
-        query: {
-          limit: 10000
-        }
-      }, {
-        test: /\.(ttf|eot|svg)(\?[\s\S]+)?$/,
-        loader: 'file'
-      }]
+      loaders: concat(
+        loaders.typesctipt,
+        loaders.bootstapJQueryPlugins,
+        loaders.json,
+        loaders.styles,
+        loaders.bootstrapFonts
+      )
     },
-    plugins: [
-      new ProgressBarPlugin(),
-      new webpack.NamedModulesPlugin(),
-      new webpack.DllReferencePlugin({
-        context: process.cwd(),
-        manifest: require(path.join(helpers.OUTPUT_PATH, 'vendor-manifest.json')),
-        extensions: ['.js']
-      }),
-      new webpack.optimize.CommonsChunkPlugin({
-        name: 'lib'
-      }),
-      new HtmlWebpackPlugin({
-        template: 'index.html',
-        chunksSortMode: 'dependency'
-      }),
-      new webpack.ProvidePlugin({
-        $: "jquery",
-        jQuery: "jquery",
-        "window.jQuery": "jquery"
-      }),
-      new ExtractTextPlugin({
-        filename: `${bundleName}.[name].css`,
-        allChunks: true
-      })
-    ]
+    plugins: getPlugins()
   };
 
-  if (opts.isHmrEnabled) {
+  if (helpers.isHmrEnabled()) {
     config = merge(
       {
         entry: {
@@ -138,10 +116,9 @@ module.exports = (opts) => {
       config,
       {
         module: {
-          loaders: [{
-            test: /\.(ts|tsx)$/,
-            loaders: ['react-hot-loader/webpack']
-          }]
+          loaders: [
+            loaders.hotLoader
+          ]
         }
       }
     );

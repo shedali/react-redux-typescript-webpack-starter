@@ -1,5 +1,6 @@
 const path = require('path');
-const defaults = require('./defaults.json');
+const appConfig = require('./app.json');
+const bundleConfig = require('./bundle.json');
 
 function hasProcessFlag(flag) {
   return process.argv.join('').indexOf(flag) > -1;
@@ -8,11 +9,11 @@ function hasProcessFlag(flag) {
 exports.hasProcessFlag = hasProcessFlag;
 
 exports.getHost = function() {
-  return process.env.HOST || defaults.host;
+  return process.env.HOST || appConfig.host;
 };
 
 exports.getPort = function() {
-  return process.env.PORT || defaults.port;
+  return process.env.PORT || appConfig.port;
 };
 
 exports.getEnv = function() {
@@ -29,7 +30,7 @@ exports.isHmrEnabled = function() {
   return hasProcessFlag('hot');
 };
 
-const BUILD_TARGET_DEFAULT = defaults.target;
+const BUILD_TARGET_DEFAULT = bundleConfig.target;
 const BUILD_TARGET_PLUGIN = 'plugin';
 const BUILD_TARGET_LIBRARY = 'lib';
 const BUILD_TARGET_APP = 'app';
@@ -48,7 +49,7 @@ exports.OUTPUT_PATH = path.join(exports.ROOT, 'dist');
 exports.BUNDLE_OUTPUT_PATH = path.join(exports.OUTPUT_PATH, 'bundles');
 
 function getBundleName() {
-  return defaults.bundleName;
+  return bundleConfig.bundleName;
 }
 
 exports.getBundleName = getBundleName;
@@ -60,4 +61,4 @@ exports.getCssBundleFilename = function() {
   }
   cssBundleName += '.css';
   return cssBundleName;
-}
+};
