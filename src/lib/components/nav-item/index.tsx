@@ -11,7 +11,7 @@ export default class NavItem extends React.Component<NavItemProps, void> {
     context: any;
 
     static contextTypes = {
-        router: React.PropTypes.func.isRequired
+        router: React.PropTypes.object.isRequired
     };
 
     render() {
