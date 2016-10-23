@@ -1,15 +1,18 @@
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const path = require('path');
+const concat = require('lodash/concat');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const helpers = require('../config/helpers');
+const loaders = require('./loaders');
 
-module.exports = (opts) => {
+module.exports = (options) => {
 
   const config = {
     context: path.join(helpers.ROOT, 'src'),
     module: {
-      loaders: [{
+      loaders: concat({
         test: /\.(js|ts|tsx)$/,
         loader: 'istanbul-instrumenter-loader',
         include: path.join(helpers.ROOT, 'src'),
@@ -25,11 +28,13 @@ module.exports = (opts) => {
           sourceMap: false,
           inlineSourceMap: true
         }
-      }, {
+      },
+      loaders.styles,
+      {
         test: /\.js$/,
         loader: 'source-map-loader',
         enforce: 'pre'
-      }]
+      })
     },
     resolve: {
       modules: [
@@ -44,7 +49,13 @@ module.exports = (opts) => {
       'react/addons': true,
       'react/lib/ExecutionEnvironment': true,
       'react/lib/ReactContext': true
-    }
+    },
+    plugins: [
+      new ExtractTextPlugin({
+        filename: helpers.getCssBundleFilename(),
+        allChunks: true
+      })
+    ]
   };
 
   return config;
