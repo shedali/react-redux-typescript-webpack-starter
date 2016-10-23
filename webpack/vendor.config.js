@@ -3,8 +3,7 @@ const webpack = require('webpack');
 const colors = require('colors');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 
-const helpers = require('./helpers');
-const bundleName = helpers.getBundleName();
+const helpers = require('../config/helpers');
 
 module.exports = () => {
 
@@ -13,6 +12,13 @@ module.exports = () => {
   var outputPath = helpers.getBuildTarget() === helpers.BUILD_TARGET_LIBRARY ?
     helpers.BUNDLE_OUTPUT_PATH : helpers.OUTPUT_PATH;
 
+  var libraryTarget = 'umd';
+  var jsBundleFilename = helpers.getBundleName() + '.[name].' + libraryTarget;
+  if (helpers.isProd()) {
+    jsBundleFilename  += '.min';
+  }
+  jsBundleFilename += '.js';
+
   return {
     context: helpers.ROOT,
     entry: {
@@ -20,24 +26,18 @@ module.exports = () => {
     },
     output: {
       path: outputPath,
-      filename: `${bundleName}.[name].umd.js`,
-      sourceMapFilename: `${bundleName}.[name].umd.js.map`,
+      filename: jsBundleFilename,
+      sourceMapFilename: `${jsBundleFilename}.map`,
       library: '[name]_[hash]',
-      libraryTarget: 'umd'
+      libraryTarget: libraryTarget
     },
     devtool: 'source-map',
     plugins: [
       new ProgressBarPlugin(),
-
       new webpack.optimize.DedupePlugin(),
-
       new webpack.DllPlugin({
         path: path.join(outputPath, '[name]-manifest.json'),
         name: '[name]_[hash]'
-      }),
-
-      new webpack.DefinePlugin({
-        'process.env.NODE_ENV': '"production"'
       })
     ]
   };

@@ -4,18 +4,51 @@ const webpack = require('webpack');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-const helpers = require('./helpers');
-const bundleName = helpers.getBundleName();
+const helpers = require('../config/helpers');
+
+function getPlugins() {
+  var plugins = [
+    new ProgressBarPlugin(),
+    new webpack.NamedModulesPlugin(),
+    new webpack.DllReferencePlugin({
+      context: helpers.ROOT,
+      manifest: require(path.join(helpers.BUNDLE_OUTPUT_PATH, 'vendor-manifest.json')),
+      extensions: ['.js']
+    }),
+    new ExtractTextPlugin({
+      filename: helpers.getCssBundleFilename(),
+      allChunks: true
+    })
+  ];
+
+  if (helpers.isProd()) {
+    plugins.push(new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false
+      }
+    }));
+  }
+
+  return plugins;
+}
 
 module.exports = (options) => {
 
+  var libraryTarget = 'umd';
+  var jsBundleFilename = helpers.getBundleName() + '.' + libraryTarget;
+  if (helpers.isProd()) {
+    jsBundleFilename  += '.min';
+  }
+  jsBundleFilename += '.js';
+
   return {
     cache: true,
-    context: path.resolve(__dirname, '..', 'src'),
+    context: path.join(helpers.ROOT, 'src'),
     entry: '../index.ts',
     output: {
       path: helpers.BUNDLE_OUTPUT_PATH,
-      filename: `${bundleName}.umd.js`,
+      filename: jsBundleFilename,
+      sourceMapFilename: `${jsBundleFilename}.map`,
       libraryTarget: 'umd'
     },
     devtool: 'source-map',
@@ -70,19 +103,7 @@ module.exports = (options) => {
         })
       }]
     },
-    plugins: [
-      new ProgressBarPlugin(),
-      new webpack.NamedModulesPlugin(),
-      new webpack.DllReferencePlugin({
-        context: process.cwd(),
-        manifest: require(path.join(helpers.BUNDLE_OUTPUT_PATH, 'vendor-manifest.json')),
-        extensions: ['.js']
-      }),
-      new ExtractTextPlugin({
-        filename: `${bundleName}.css`,
-        allChunks: true
-      })
-    ]
+    plugins: getPlugins()
   };
 
 };

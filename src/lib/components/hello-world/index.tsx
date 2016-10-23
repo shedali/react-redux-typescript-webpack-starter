@@ -13,7 +13,7 @@ export interface HelloProps {
 export class Hello extends React.Component<HelloProps, any> {
 
     render() {
-        return <div className={styles.greeting}>Hello {this.props.name}!</div>
+        return <div className={styles.greeting}>Hello {this.props.name}!</div>;
     }
 
 }

@@ -5,8 +5,28 @@ const nodeExternals = require('webpack-node-externals');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-const helpers = require('./helpers');
-const bundleName = helpers.getBundleName();
+const helpers = require('../config/helpers');
+
+function getPlugins() {
+
+  var plugins = [
+    new ProgressBarPlugin(),
+    new ExtractTextPlugin({
+      filename: helpers.getCssBundleFilename(),
+      allChunks: true
+    })
+  ];
+
+  if (helpers.isProd()) {
+    plugins.push(new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false
+      }
+    }));
+  }
+
+  return plugins;
+};
 
 module.exports = (options) => {
 
@@ -18,15 +38,22 @@ module.exports = (options) => {
     `.red);
   }
 
+  var libraryTarget = 'umd';
+  var jsBundleFilename = helpers.getBundleName() + '.' + libraryTarget;
+  if (helpers.isProd()) {
+    jsBundleFilename += '.min';
+  }
+  jsBundleFilename += '.js';
+
   return {
     cache: true,
     context: path.join(helpers.ROOT, 'src'),
     entry: '../index.ts',
     output: {
       path: helpers.BUNDLE_OUTPUT_PATH,
-      filename: `${bundleName}.umd.js`,
-      sourceMapFilename: `${bundleName}.umd.js.map`,
-      libraryTarget: 'umd'
+      filename: jsBundleFilename,
+      sourceMapFilename: `${jsBundleFilename}.map`,
+      libraryTarget: libraryTarget
     },
     devtool: 'source-map',
     resolve: {
@@ -78,15 +105,13 @@ module.exports = (options) => {
             loader: 'postcss-loader'
           }]
         })
+      }, {
+        test: /\.(ts|tsx)$/,
+        loader: 'tslint',
+        enforce: 'pre'
       }]
     },
-    plugins: [
-      new ProgressBarPlugin(),
-      new ExtractTextPlugin({
-        filename: `${bundleName}.css`,
-        allChunks: true
-      })
-    ],
+    plugins: getPlugins(),
     externals: nodeExternals()
   };
 

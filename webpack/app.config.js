@@ -1,91 +1,28 @@
-const colors = require('colors');
-const path = require('path');
 const webpack = require('webpack');
-const nodeExternals = require('webpack-node-externals');
+const merge = require('webpack-merge');
+const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-const helpers = require('./helpers');
+const helpers = require('../config/helpers');
 const bundleName = helpers.getBundleName();
 
-const getExternals = (target) => {
-  var externals = {};
-  if (target === helpers.BUILD_TARGET_PLUGIN) {
-    externals = nodeExternals();
-  }
-  return externals;
-}
+module.exports = (opts) => {
 
-const getEntries = (target) => {
-  var entries;
-  console.log(`The build target is ${target}.`);
-  if (target === helpers.BUILD_TARGET_LIBRARY) {
-    entries = '../index.ts';
-  }
-  else if (target === helpers.BUILD_TARGET_PLUGIN) {
-    entries = '../index.ts';
-  }
-  else {
-    entries = {/*
+  var config = {
+    cache: true,
+    context: path.resolve(__dirname, '..', 'src'),
+    entry: {
+      lib: './lib/index.tsx',
       app: [
         'bootstrap-loader',
         './app/index.tsx'
-      ],
-      lib: './lib/index.tsx'
-    */};
-  }
-  return entries;
-};
-
-const getPlugins = (target) => {
-  var plugins;
-  // TODO: optimize
-  if (target === helpers.BUILD_TARGET_PLUGIN) {
-    plugins = [
-      new ProgressBarPlugin(),
-      new ExtractTextPlugin({
-        filename: '[name].css',
-        allChunks: true
-      })
-    ]
-  }
-  else {
-    plugins = [
-      new ProgressBarPlugin(),
-      new webpack.NamedModulesPlugin(),
-      new webpack.DllReferencePlugin({
-        context: process.cwd(),
-        manifest: require(path.join(helpers.OUTPUT_PATH, 'vendor-manifest.json')),
-        extensions: ['.js']
-      }),
-      new HtmlWebpackPlugin({
-        template: 'index.html',
-        chunksSortMode: 'dependency'
-      }),
-      new webpack.ProvidePlugin({
-        $: "jquery",
-        jQuery: "jquery",
-        "window.jQuery": "jquery"
-      }),
-      new ExtractTextPlugin({
-        filename: `${bundleName}.[name].css`,
-        allChunks: true
-      })
-    ];
-  }
-  return plugins;
-}
-
-module.exports = (options) => {
-
-  return {
-    cache: true,
-    context: path.resolve(__dirname, '..', 'src'),
-    entry: getEntries(options.target),
+      ]
+    },
     output: {
       path: helpers.OUTPUT_PATH,
-      filename: '[name].js'
+      filename: `${bundleName}.[name].js`
     },
     devServer: {
       outputPath: helpers.OUTPUT_PATH,
@@ -161,8 +98,55 @@ module.exports = (options) => {
         loader: 'file'
       }]
     },
-    plugins: getPlugins(options.target),
-    externals: getExternals(options.target)
+    plugins: [
+      new ProgressBarPlugin(),
+      new webpack.NamedModulesPlugin(),
+      new webpack.DllReferencePlugin({
+        context: process.cwd(),
+        manifest: require(path.join(helpers.OUTPUT_PATH, 'vendor-manifest.json')),
+        extensions: ['.js']
+      }),
+      new webpack.optimize.CommonsChunkPlugin({
+        name: 'lib'
+      }),
+      new HtmlWebpackPlugin({
+        template: 'index.html',
+        chunksSortMode: 'dependency'
+      }),
+      new webpack.ProvidePlugin({
+        $: "jquery",
+        jQuery: "jquery",
+        "window.jQuery": "jquery"
+      }),
+      new ExtractTextPlugin({
+        filename: `${bundleName}.[name].css`,
+        allChunks: true
+      })
+    ]
   };
 
+  if (opts.isHmrEnabled) {
+    config = merge(
+      {
+        entry: {
+          app: [
+            'webpack-dev-server/client?http://localhost:8080',
+            'webpack/hot/only-dev-server'
+          ]
+        }
+      },
+      config,
+      {
+        module: {
+          loaders: [{
+            test: /\.(ts|tsx)$/,
+            loaders: ['react-hot-loader/webpack']
+          }]
+        }
+      }
+    );
+
+  }
+
+  return config;
 };

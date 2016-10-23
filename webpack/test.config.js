@@ -2,17 +2,17 @@ const webpack = require('webpack');
 const merge = require('webpack-merge');
 const path = require('path');
 
-const ENV = process.env.ENV = process.env.NODE_ENV = 'test';
+const helpers = require('../config/helpers');
 
 module.exports = (opts) => {
 
   const config = {
-    context: path.resolve(__dirname, '..', 'src'),
+    context: path.join(helpers.ROOT, 'src'),
     module: {
       loaders: [{
         test: /\.(js|ts|tsx)$/,
         loader: 'istanbul-instrumenter-loader',
-        include: path.resolve(__dirname, '..', 'src'),
+        include: path.join(helpers.ROOT, 'src'),
         exclude: [
           /\.spec\.(ts|tsx)$/,
           /node_modules/

@@ -7,15 +7,24 @@
   "typings": "index.d.ts",
   "scripts": {
     "clean": "rimraf dist coverage",
-    "build:vendor": "webpack --config config/webpack.vendor.js",
+    "build:vendor": "webpack --config webpack/vendor.config.js",
     "build:dev": "NODE_ENV=development webpack --config webpack.config.js --profile --display-error-details",
+    "build:prod": "NODE_ENV=production webpack --config webpack.config.js --profile --display-error-details",
     "compile:lib": "tsc --project lib.tsconfig.json",
-    "prebuild:plugin:dev": "npm run clean",
-    "build:plugin:dev": "npm run compile:lib && TARGET=plugin npm run build:dev",
-    "prebuild:lib:dev": "npm run clean && TARGET=lib npm run build:vendor",
-    "build:lib:dev": "npm run compile:lib && TARGET=lib npm run build:dev",
-    "prebuild:app:dev": "npm run clean && npm run build:vendor",
+    "build:plugin:dev": "TARGET=plugin npm run build:dev",
+    "build:plugin:prod": "TARGET=plugin npm run build:prod",
+    "prebuild:plugin": "npm run clean",
+    "build:plugin": "npm run compile:lib && concurrently --kill-others \"npm run build:plugin:dev\" \"npm run build:plugin:prod\"",
+    "prebuild:lib:dev": "NODE_ENV=development TARGET=lib npm run build:vendor",
+    "build:lib:dev": "TARGET=lib npm run build:dev",
+    "prebuild:lib:prod": "NODE_ENV=production TARGET=lib npm run build:vendor",
+    "build:lib:prod": "TARGET=lib npm run build:prod",
+    "prebuild:lib": "npm run clean",
+    "build:lib": "npm run compile:lib && concurrently --kill-others \"npm run build:lib:dev\" \"npm run build:lib:prod\"",
+    "prebuild:app:dev": "NODE_ENV=development TARGET=app npm run build:vendor",
     "build:app:dev": "TARGET=app npm run build:dev",
+    "prebuild:app:prod": "NODE_ENV=production TARGET=app npm run build:vendor",
+    "build:app:prod": "TARGET=app npm run build:prod",
     "watch:dev": "npm run build:dev -- --watch",
     "start:hmr": "npm run server:dev:hmr",
     "server:dev:hmr": "npm run server:dev -- --inline --hot",
@@ -46,6 +55,7 @@
     "bootstrap-sass": "^3.3.7",
     "chai": "^3.5.0",
     "colors": "^1.1.2",
+    "concurrently": "^3.1.0",
     "css-loader": "^0.25.0",
     "enzyme": "^2.4.1",
     "extract-text-webpack-plugin": "^2.0.0-beta.4",
@@ -96,5 +106,8 @@
     "react-router": "^2.8.1",
     "react-router-redux": "^4.0.6",
     "redux": "^3.6.0"
-  }
+  },
+  "files": [
+    "dist"
+  ]
 }

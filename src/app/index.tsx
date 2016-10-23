@@ -1,7 +1,7 @@
 declare var module: {hot: any};
 
 if (module.hot) {
-    require("react-hot-loader/patch");
+    require('react-hot-loader/patch');
 }
 
 import * as React from 'react';

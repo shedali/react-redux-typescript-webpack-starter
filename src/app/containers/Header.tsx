@@ -10,7 +10,7 @@ export default class Header extends React.Component<any, any> {
     render() {
         return (
             <Navbar brand="react-redux-typescript-webpack-starter">
-                <Nav align='right'>
+                <Nav align="right">
                     <NavItem to="/">Home</NavItem>
                     <NavItem to="/about">About</NavItem>
                     <NavItem to="/contact">Contact</NavItem>
