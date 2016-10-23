@@ -41,6 +41,7 @@
     "watch:dev": "npm run build:dev -- --watch",
     "start:hmr": "npm run server:dev:hmr",
     "server:dev:hmr": "npm run server:dev -- --inline --hot",
+    "preserver:dev": "npm run clean && npm run build:vendor",
     "server:dev": "NODE_ENV=development webpack-dev-server --config webpack.config.js --watch",
     "test": "karma start",
     "watch:test": "npm run test -- --auto-watch --no-single-run"
