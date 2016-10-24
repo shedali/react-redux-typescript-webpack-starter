@@ -16,8 +16,8 @@
     "hmr"
   ],
   "private": true,
-  "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
+  "main": "bundles/bundle.umd.js",
+  "typings": "index.d.ts",
   "scripts": {
     "clean": "rimraf dist coverage",
     "build:vendor": "webpack --config webpack/vendor.config.js",
@@ -44,7 +44,9 @@
     "preserver:dev": "npm run clean && npm run build:vendor",
     "server:dev": "NODE_ENV=development webpack-dev-server --config webpack.config.js --watch",
     "test": "karma start",
-    "watch:test": "npm run test -- --auto-watch --no-single-run"
+    "watch:test": "npm run test -- --auto-watch --no-single-run",
+    "prepublish:dist": "copyfiles package.json LICENSE README.md ./dist",
+    "publish:dist": "npm publish ./dist"
   },
   "author": "Maxim Lichmanov <reanimatter@gmail.com> (http://reanimatter.com)",
   "license": "MIT",
@@ -70,6 +72,7 @@
     "chai": "^3.5.0",
     "colors": "^1.1.2",
     "concurrently": "^3.1.0",
+    "copyfiles": "^1.0.0",
     "css-loader": "^0.25.0",
     "enzyme": "^2.4.1",
     "extract-text-webpack-plugin": "^2.0.0-beta.4",
@@ -120,8 +123,5 @@
     "react-router": "^2.8.1",
     "react-router-redux": "^4.0.6",
     "redux": "^3.6.0"
-  },
-  "files": [
-    "dist"
-  ]
+  }
 }
