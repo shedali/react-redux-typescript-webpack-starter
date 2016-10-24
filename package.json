@@ -16,8 +16,8 @@
     "hmr"
   ],
   "private": true,
-  "main": "index.js",
-  "typings": "index.d.ts",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
   "scripts": {
     "clean": "rimraf dist coverage",
     "build:vendor": "webpack --config webpack/vendor.config.js",

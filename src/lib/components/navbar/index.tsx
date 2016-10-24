@@ -10,7 +10,7 @@ export interface NavbarState {
     id?: string;
 }
 
-export default class Navbar extends React.Component<NavbarProps, NavbarState> {
+export class Navbar extends React.Component<NavbarProps, NavbarState> {
 
     componentWillMount() {
         const id = this.props.id || _.uniqueId('navbar-');

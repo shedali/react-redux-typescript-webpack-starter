@@ -5,7 +5,7 @@ export interface NavProps {
     align?: 'left' | 'right';
 }
 
-export default class Nav extends React.Component<NavProps, void> {
+export class Nav extends React.Component<NavProps, void> {
 
     render() {
         const {

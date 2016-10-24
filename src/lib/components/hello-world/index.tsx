@@ -2,7 +2,7 @@ import * as React from 'react';
 
 const styles: any = require<any>('./styles.scss');
 
-const HelloWorld = () => (
+export const HelloWorld = () => (
     <div>Hello World! ;-)</div>
 );
 
@@ -17,5 +17,3 @@ export class Hello extends React.Component<HelloProps, any> {
     }
 
 }
-
-export default HelloWorld;

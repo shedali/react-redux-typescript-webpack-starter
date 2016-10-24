@@ -6,7 +6,7 @@ export interface NavItemProps {
     to?: string;
 }
 
-export default class NavItem extends React.Component<NavItemProps, void> {
+export class NavItem extends React.Component<NavItemProps, void> {
 
     context: any;
 
