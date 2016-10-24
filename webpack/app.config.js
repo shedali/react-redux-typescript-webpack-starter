@@ -88,7 +88,9 @@ module.exports = (options) => {
     output: {
       path: helpers.OUTPUT_PATH,
       filename: jsBundleFilename,
-      sourceMapFilename: `${jsBundleFilename}.map`
+      sourceMapFilename: `${jsBundleFilename}.map`,
+      libraryTarget: 'umd',
+      umdNamedDefine: true
     },
     devServer: {
       host: helpers.getHost(),

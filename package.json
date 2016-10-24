@@ -16,37 +16,28 @@
     "hmr"
   ],
   "private": true,
-  "main": "bundles/bundle.umd.js",
-  "typings": "index.d.ts",
+  "main": "dist/bundles/bundle.umd.js",
+  "typings": "dist/index.d.ts",
   "scripts": {
     "clean": "rimraf dist coverage",
-    "build:vendor": "webpack --config webpack/vendor.config.js",
-    "build:dev": "NODE_ENV=development webpack --config webpack.config.js --profile --display-error-details",
-    "build:prod": "NODE_ENV=production webpack --config webpack.config.js --profile --display-error-details",
+    "build:vendor:dev": "NODE_ENV=development webpack --config webpack/vendor.config.js",
+    "build:vendor:prod": "NODE_ENV=production webpack --config webpack/vendor.config.js",
+    "prebuild:dev": "npm run build:vendor:dev",
+    "build:dev": "NODE_ENV=development webpack --config webpack/app.config.js --profile --display-error-details",
+    "prebuild:prod": "npm run build:vendor:prod",
+    "build:prod": "NODE_ENV=production webpack --config webpack/app.config.js --profile --display-error-details",
     "compile:lib": "tsc --project lib.tsconfig.json",
-    "build:plugin:dev": "TARGET=plugin npm run build:dev",
-    "build:plugin:prod": "TARGET=plugin npm run build:prod",
-    "prebuild:plugin": "npm run clean",
-    "build:plugin": "npm run compile:lib && concurrently --kill-others \"npm run build:plugin:dev\" \"npm run build:plugin:prod\"",
-    "prebuild:lib:dev": "NODE_ENV=development TARGET=lib npm run build:vendor",
-    "build:lib:dev": "TARGET=lib npm run build:dev",
-    "prebuild:lib:prod": "NODE_ENV=production TARGET=lib npm run build:vendor",
-    "build:lib:prod": "TARGET=lib npm run build:prod",
+    "build:lib:dev": "NODE_ENV=development webpack --config webpack/lib.config.js --profile --display-error-details",
+    "build:lib:prod": "NODE_ENV=production webpack --config webpack/lib.config.js --profile --display-error-details",
     "prebuild:lib": "npm run clean",
     "build:lib": "npm run compile:lib && concurrently --kill-others \"npm run build:lib:dev\" \"npm run build:lib:prod\"",
-    "prebuild:app:dev": "NODE_ENV=development TARGET=app npm run build:vendor",
-    "build:app:dev": "TARGET=app npm run build:dev",
-    "prebuild:app:prod": "NODE_ENV=production TARGET=app npm run build:vendor",
-    "build:app:prod": "TARGET=app npm run build:prod",
     "watch:dev": "npm run build:dev -- --watch",
     "start:hmr": "npm run server:dev:hmr",
     "server:dev:hmr": "npm run server:dev -- --inline --hot",
-    "preserver:dev": "npm run clean && npm run build:vendor",
+    "preserver:dev": "npm run clean && npm run build:vendor:dev",
     "server:dev": "NODE_ENV=development webpack-dev-server --config webpack.config.js --watch",
     "test": "karma start",
-    "watch:test": "npm run test -- --auto-watch --no-single-run",
-    "prepublish:dist": "copyfiles package.json LICENSE README.md ./dist",
-    "publish:dist": "npm publish ./dist"
+    "test:watch": "npm run test -- --auto-watch --no-single-run"
   },
   "author": "Maxim Lichmanov <reanimatter@gmail.com> (http://reanimatter.com)",
   "license": "MIT",
@@ -123,5 +114,8 @@
     "react-router": "^2.8.1",
     "react-router-redux": "^4.0.6",
     "redux": "^3.6.0"
-  }
+  },
+  "files": [
+    "dist"
+  ]
 }
