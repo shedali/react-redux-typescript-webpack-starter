@@ -2,11 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>React+Redux+TypeScript+Webpack</title>
+    <title><%= htmlWebpackPlugin.options.title %></title>
 </head>
 <body>
 <div id="container"></div>
-<!-- TODO: provide bundle name in expression -->
-<script src="bundle.vendor.umd.js"></script>
+<script src="<%= htmlWebpackPlugin.options.vendorBundlePath %>"></script>
 </body>
 </html>

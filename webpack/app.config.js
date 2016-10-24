@@ -19,6 +19,15 @@ function getPlugins() {
   }
   var cssBundleFilename = bundleFilename + '.css';
 
+  // TODO: replace by value from bundle.json
+  var libraryTarget = 'umd';
+  var vendorBundleFilename = bundleName + '.vendor';
+  vendorBundleFilename += '.' + libraryTarget;
+  if (helpers.isProd()) {
+    vendorBundleFilename  += '.min';
+  }
+  vendorBundleFilename += '.js';
+
   var plugins = [
     new ProgressBarPlugin(),
     new webpack.NamedModulesPlugin(),
@@ -32,6 +41,8 @@ function getPlugins() {
     }),
     new HtmlWebpackPlugin({
       template: 'index.html',
+      title: helpers.getTitle(),
+      vendorBundlePath: vendorBundleFilename,
       chunksSortMode: 'dependency'
     }),
     new webpack.ProvidePlugin({
@@ -80,6 +91,8 @@ module.exports = (options) => {
       sourceMapFilename: `${jsBundleFilename}.map`
     },
     devServer: {
+      host: helpers.getHost(),
+      port: helpers.getPort(),
       outputPath: helpers.OUTPUT_PATH,
       contentBase: 'dist'
     },
@@ -108,7 +121,7 @@ module.exports = (options) => {
       {
         entry: {
           app: [
-            'webpack-dev-server/client?http://localhost:8080',
+            `webpack-dev-server/client?http://${helpers.getHost()}:${helpers.getPort()}`,
             'webpack/hot/only-dev-server'
           ]
         }

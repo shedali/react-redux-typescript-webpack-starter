@@ -8,6 +8,10 @@ function hasProcessFlag(flag) {
 
 exports.hasProcessFlag = hasProcessFlag;
 
+exports.getTitle = function() {
+  return appConfig.title;
+};
+
 exports.getHost = function() {
   return process.env.HOST || appConfig.host;
 };
