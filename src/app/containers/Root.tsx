@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import Header from 'app/containers/Header';
+import Header from './Header';
 
 export default class Root extends React.Component<any, any> {
 

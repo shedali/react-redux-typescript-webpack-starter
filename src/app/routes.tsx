@@ -1,12 +1,11 @@
 import * as React from 'react';
 import { Route, RouteProps, IndexRoute } from 'react-router';
 
-
-import Root from 'app/containers/Root';
-import Home from 'app/containers/Home';
-import About from 'app/containers/About';
-import Contact from 'app/containers/Contact';
-import NotFound from 'app/containers/NotFound';
+import Root from './containers/Root';
+import Home from './containers/Home';
+import About from './containers/About';
+import Contact from './containers/Contact';
+import NotFound from './containers/NotFound';
 
 const routeConfig: RouteProps[] = [{
     path: '/',

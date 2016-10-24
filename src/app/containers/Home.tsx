@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Hello } from 'lib/components/hello-world';
+import { Hello } from '../../lib/components/hello-world';
 
 const Home = () => (
     <div>

@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as chai from 'chai';
 import { mount, shallow } from 'enzyme';
 
-import { Hello, HelloProps } from 'lib/components/hello-world';
+import { Hello, HelloProps } from './index';
 
 describe('<Hello />', () => {
 

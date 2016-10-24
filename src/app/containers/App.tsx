@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Router } from 'react-router';
 
-import routes from 'app/routes';
+import routes from '../routes';
 
 export default class App extends React.Component<any, any> {
 

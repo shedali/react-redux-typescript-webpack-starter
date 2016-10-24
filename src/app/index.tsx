@@ -12,8 +12,8 @@ import { hashHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import { AppContainer } from 'react-hot-loader';
 
-import App from 'app/containers/App';
-import rootReducer from 'app/reducers';
+import App from './containers/App';
+import rootReducer from './reducers';
 
 const store = createStore(rootReducer, {});
 const history = syncHistoryWithStore(hashHistory, store);
