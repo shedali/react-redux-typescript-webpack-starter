@@ -67,7 +67,7 @@ module.exports = (options) => {
     },
     module: {
       loaders: concat(
-        loaders.typesctipt,
+        loaders.typescript,
         loaders.styles,
         loaders.linter
       )

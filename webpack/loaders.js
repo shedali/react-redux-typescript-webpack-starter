@@ -76,7 +76,7 @@ exports.linter = {
   enforce: 'pre'
 };
 
-exports.typesctipt = {
+exports.typescript = {
   test: /\.(ts|tsx)$/,
   loaders: ['awesome-typescript-loader']
 };
