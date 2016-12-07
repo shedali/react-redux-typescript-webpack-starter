@@ -1,4 +1,4 @@
-[![dependencies Status](https://david-dm.org/reanimatter/react-redux-typescript-webpack-starter/status.svg)](https://david-dm.org/reanimatter/react-redux-typescript-webpack-starter) [![devDependencies Status](https://david-dm.org/reanimatter/react-redux-typescript-webpack-starter/dev-status.svg)](https://david-dm.org/reanimatter/react-redux-typescript-webpack-starter?type=dev)
+[![dependencies Status](https://david-dm.org/reanimatter/react-redux-typescript-webpack-starter/status.svg)](https://david-dm.org/reanimatter/react-redux-typescript-webpack-starter) [![devDependencies Status](https://david-dm.org/reanimatter/react-redux-typescript-webpack-starter/dev-status.svg)](https://david-dm.org/reanimatter/react-redux-typescript-webpack-starter?type=dev) [![Build Status](https://travis-ci.org/reanimatter/react-redux-typescript-webpack-starter.svg?branch=master)](https://travis-ci.org/reanimatter/react-redux-typescript-webpack-starter)
 
 # react-redux-typescript-webpack-starter
 
