@@ -29,6 +29,7 @@ module.exports = (options) => {
           inlineSourceMap: true
         }
       },
+      loaders.json,
       loaders.styles,
       {
         test: /\.js$/,
@@ -44,12 +45,11 @@ module.exports = (options) => {
       extensions: ['.ts', '.tsx', '.js', '.jsx']
     },
     devtool: 'inline-source-map',
-    externals: {
-      cheerio: 'window',
-      'react/addons': true,
-      'react/lib/ExecutionEnvironment': true,
-      'react/lib/ReactContext': true
-    },
+    externals: [
+      'react/addons',
+      'react/lib/ExecutionEnvironment',
+      'react/lib/ReactContext'
+    ],
     plugins: [
       new ExtractTextPlugin({
         filename: helpers.getCssBundleFilename(),

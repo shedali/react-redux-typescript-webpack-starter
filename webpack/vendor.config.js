@@ -9,7 +9,6 @@ function getPlugins() {
 
   var plugins = [
     new ProgressBarPlugin(),
-    new webpack.optimize.DedupePlugin(),
     new webpack.DllPlugin({
       path: path.join(helpers.OUTPUT_PATH, '[name]-manifest.json'),
       name: '[name]_[hash]'

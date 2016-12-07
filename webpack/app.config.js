@@ -95,7 +95,6 @@ module.exports = (options) => {
     devServer: {
       host: helpers.getHost(),
       port: helpers.getPort(),
-      outputPath: helpers.OUTPUT_PATH,
       contentBase: 'dist'
     },
     devtool: 'source-map',

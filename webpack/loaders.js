@@ -2,12 +2,12 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 exports.json = {
   test: /\.json$/,
-  loader: 'json'
+  loader: 'json-loader'
 };
 
 exports.bootstapJQueryPlugins = {
   test: /bootstrap-sass[\/\\]assets[\/\\]javascripts[\/\\]/,
-  loader: 'imports',
+  loader: 'imports-loader',
   query: {
     jQuery: 'jquery'
   }
@@ -15,13 +15,13 @@ exports.bootstapJQueryPlugins = {
 
 exports.bootstrapFonts = [{
   test: /\.woff2?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-  loader: 'url',
+  loader: 'url-loader',
   query: {
     limit: 10000
   }
 }, {
   test: /\.(ttf|eot|svg)(\?[\s\S]+)?$/,
-  loader: 'file'
+  loader: 'file-loader'
 }];
 
 exports.styles = [{
@@ -72,7 +72,7 @@ exports.styles = [{
 
 exports.linter = {
   test: /\.(ts|tsx)$/,
-  loader: 'tslint',
+  loader: 'tslint-loader',
   enforce: 'pre'
 };
 
