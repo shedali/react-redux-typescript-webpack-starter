@@ -79,7 +79,6 @@ module.exports = (options) => {
     cache: true,
     context: path.resolve(__dirname, '..', 'src'),
     entry: {
-      lib: './lib/index.tsx',
       app: [
         'bootstrap-loader',
         './app/index.tsx'
