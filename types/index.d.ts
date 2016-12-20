@@ -1,5 +1,3 @@
-/// <reference path="./react-hot-loader/index.d.ts"/>
-
 declare var require: {
     (path: string): any;
     <T>(path: string): T;
