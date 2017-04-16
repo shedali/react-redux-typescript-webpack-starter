@@ -6,17 +6,20 @@ if (module.hot) {
 
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
-import { hashHistory } from 'react-router';
-import { syncHistoryWithStore } from 'react-router-redux';
+import { createHashHistory } from 'history';
+import { routerMiddleware } from 'react-router-redux';
 import { AppContainer } from 'react-hot-loader';
 
 import App from './containers/App';
 import rootReducer from './reducers';
 
-const store = createStore(rootReducer, {});
-const history = syncHistoryWithStore(hashHistory, store);
+const history = createHashHistory();
+
+const middleware = routerMiddleware(history);
+
+const store = createStore(rootReducer, applyMiddleware(middleware));
 
 /*
  A workaround to fix the warning: "You cannot change <Router routes>; it will be ignored"

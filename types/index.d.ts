@@ -4,3 +4,5 @@ declare var require: {
     (paths: string[], callbacks: (...modules: any[]) => void): void;
     ensure: (paths: string[], callback: (require: <T>(path: string) => T) => void) => void;
 }
+
+declare module 'prop-types';

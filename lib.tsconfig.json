@@ -12,7 +12,9 @@
     "outDir": "dist",
     "typeRoots": [
       "./node_modules/@types", "./types"
-    ]
+    ],
+    "allowUnusedLabels": false,
+    "noImplicitReturns": true
   },
   "files": [
     "index.ts",

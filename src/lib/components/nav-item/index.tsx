@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import * as classNames from 'classnames';
+import { PropTypes } from 'prop-types';
 
 export interface NavItemProps {
     to?: string;
@@ -11,12 +12,12 @@ export class NavItem extends React.Component<NavItemProps, void> {
     context: any;
 
     static contextTypes = {
-        router: React.PropTypes.object.isRequired
+        router: PropTypes.object.isRequired
     };
 
     render() {
-
-        const isActiveRoute: boolean = this.context.router.isActive(this.props.to, true);
+        // TODO: alternative
+        const isActiveRoute: boolean = this.context.router.route.location.pathname === this.props.to;
 
         return (
             <li className={classNames({active: isActiveRoute})}>

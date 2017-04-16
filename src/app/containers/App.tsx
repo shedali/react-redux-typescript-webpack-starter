@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { Router } from 'react-router';
+import { ConnectedRouter } from 'react-router-redux';
 
-import routes from '../routes';
+import Root from './Root';
 
 export default class App extends React.Component<any, any> {
 
@@ -12,8 +12,9 @@ export default class App extends React.Component<any, any> {
         } = this.props;
 
         return (
-            <Router key={routerId} history={history} routes={routes}>
-            </Router>
+            <ConnectedRouter key={routerId} history={history}>
+                <Root />
+            </ConnectedRouter>
         );
     }
 

@@ -1,14 +1,14 @@
 import * as React from 'react';
-import { Route, RouteProps, IndexRoute } from 'react-router';
+import { RouteProps } from 'react-router-dom';
 
-import Root from './containers/Root';
 import Home from './containers/Home';
 import About from './containers/About';
 import Contact from './containers/Contact';
 import NotFound from './containers/NotFound';
 
-const routeConfig: RouteProps[] = [{
+export const routes: RouteProps[] = [{
     path: '/',
+    exact: true,
     component: Home
 }, {
     path: '/about',
@@ -20,12 +20,3 @@ const routeConfig: RouteProps[] = [{
     path: '*',
     component: NotFound
 }];
-
-const routes =
-    <Route path="/" component={Root}>
-        <IndexRoute component={Home} />
-        {routeConfig.map((props: RouteProps) =>
-            <Route key={props.path} path={props.path} component={props.component}/>)}
-    </Route>;
-
-export default routes;
