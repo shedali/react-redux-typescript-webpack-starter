@@ -126,16 +126,15 @@ module.exports = (options) => {
           ]
         }
       },
-      config,
       {
         module: {
           loaders: [
             loaders.hotLoader
           ]
         }
-      }
+      },
+      config
     );
-
   }
 
   return config;
