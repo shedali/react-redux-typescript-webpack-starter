@@ -11,10 +11,13 @@ module.exports = function(config) {
     frameworks: ['mocha', 'chai', 'sinon'],
 
     // list of files / patterns to load in the browser
-    files: [{
-      pattern: './config/spec-bundle.js',
-      watched: false
-    }],
+    files: [
+      './node_modules/babel-polyfill/dist/polyfill.min.js',
+      {
+        pattern: './config/spec-bundle.js',
+        watched: false
+      }
+    ],
 
     // list of files to exclude
     exclude: [
@@ -73,5 +76,5 @@ module.exports = function(config) {
     // Concurrency level
     // how many browser should be started simultaneous
     concurrency: Infinity
-  })
-}
+  });
+};

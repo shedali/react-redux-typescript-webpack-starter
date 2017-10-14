@@ -2,21 +2,21 @@ import * as React from 'react';
 import * as classNames from 'classnames';
 
 export interface NavProps {
-    align?: 'left' | 'right';
+  align?: 'left' | 'right';
 }
 
-export class Nav extends React.Component<NavProps, void> {
+export class Nav extends React.Component<NavProps> {
 
-    render() {
-        const {
-            align
-        } = this.props;
+  render() {
+    const {
+      align
+    } = this.props;
 
-        return (
-            <ul className={classNames('nav', 'navbar-nav', { [`navbar-${align}`]: !!align })}>
-                {this.props.children}
-            </ul>
-        );
-    }
+    return (
+      <ul className={classNames('nav', 'navbar-nav', { [`navbar-${align}`]: !!align })}>
+        {this.props.children}
+      </ul>
+    );
+  }
 
 }

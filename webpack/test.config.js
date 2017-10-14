@@ -1,5 +1,3 @@
-const webpack = require('webpack');
-const merge = require('webpack-merge');
 const path = require('path');
 const concat = require('lodash/concat');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
@@ -45,11 +43,6 @@ module.exports = (options) => {
       extensions: ['.ts', '.tsx', '.js', '.jsx']
     },
     devtool: 'inline-source-map',
-    externals: [
-      'react/addons',
-      'react/lib/ExecutionEnvironment',
-      'react/lib/ReactContext'
-    ],
     plugins: [
       new ExtractTextPlugin({
         filename: helpers.getCssBundleFilename(),
