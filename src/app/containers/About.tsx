@@ -1,7 +1,9 @@
-import * as React from 'react';
+import * as React from "react";
 
-const About = () => (
-    <div><h1>About</h1></div>
+const about = () => (
+  <div>
+    <h1>About</h1>
+  </div>
 );
 
-export default About;
+export default about;
